@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DriveEase - About Us</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Global Styles */
+    :root {
+      --primary: #2c3e50;
+      --secondary: #3498db;
+      --accent: #e74c3c;
+      --light: #ecf0f1;
+      --dark: #2c3e50;
+      --success: #2ecc71;
+      --text: #333;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f8f9fa;
+      color: var(--text);
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header Styles */
+    header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
+      color: white;
+      padding: 1.5rem 0;
+      box-shadow: var(--shadow);
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo i {
+      font-size: 2rem;
+      color: var(--secondary);
+    }
+
+    .logo h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-button {
+      padding: 10px 20px;
+      background-color: var(--secondary);
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-button:hover {
+      background-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .nav-button.login {
+      background-color: transparent;
+      border: 2px solid var(--secondary);
+    }
+
+    .nav-button.login:hover {
+      background-color: var(--secondary);
+    }
+
+    /* Main Content */
+    main {
+      flex: 1;
+      padding: 3rem 0;
+    }
+
+    .page-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .page-header h1 {
+      font-size: 2.8rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    .page-header p {
+      color: #777;
+      font-size: 1.2rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* About Sections */
+    .about-section {
+      display: flex;
+      align-items: center;
+      gap: 50px;
+      margin-bottom: 5rem;
+    }
+
+    .about-section.reverse {
+      flex-direction: row-reverse;
+    }
+
+    .about-content {
+      flex: 1;
+    }
+
+    .about-content h2 {
+      font-size: 2.2rem;
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+    }
+
+    .about-content p {
+      margin-bottom: 1.5rem;
+      line-height: 1.8;
+      color: #555;
+    }
+
+    .about-image {
+      flex: 1;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .about-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: var(--transition);
+    }
+
+    .about-image:hover img {
+      transform: scale(1.05);
+    }
+
+    /* Stats Section */
+    .stats {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
+      color: white;
+      padding: 4rem 0;
+      margin: 5rem 0;
+      text-align: center;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      margin-top: 2rem;
+    }
+
+    .stat-item {
+      padding: 20px;
+    }
+
+    .stat-number {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--secondary);
+    }
+
+    .stat-text {
+      font-size: 1.2rem;
+      opacity: 0.9;
+    }
+
+    /* Values Section */
+    .values {
+      margin: 5rem 0;
+    }
+
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 3rem;
+    }
+
+    .value-card {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+    }
+
+    .value-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .value-icon {
+      background: var(--secondary);
+      color: white;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 2rem;
+      transition: var(--transition);
+    }
+
+    .value-card:hover .value-icon {
+      background: var(--accent);
+      transform: scale(1.1);
+    }
+
+    .value-card h3 {
+      font-size: 1.5rem;
+      color: var(--primary);
+      margin-bottom: 15px;
+    }
+
+    .value-card p {
+      color: #777;
+      line-height: 1.6;
+    }
+
+    /* Footer Styles */
+    .driveease-footer {
+      background: var(--dark);
+      color: white;
+      padding: 3rem 0 1.5rem;
+      margin-top: auto;
+    }
+
+    .footer-container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 40px;
+      margin-bottom: 2rem;
+    }
+
+    .footer-column h3 {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      position: relative;
+      padding-bottom: 10px;
+      color: white;
+    }
+
+    .footer-column h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 50px;
+      height: 2px;
+      background: var(--secondary);
+    }
+
+    .footer-column p {
+      margin-bottom: 20px;
+      opacity: 0.8;
+      line-height: 1.6;
+      color: white;
+    }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 10px;
+    }
+
+    .footer-links a {
+      color: white;
+      opacity: 0.8;
+      text-decoration: none;
+      transition: var(--transition);
+      display: block;
+    }
+
+    .footer-links a:hover {
+      opacity: 1;
+      color: var(--secondary);
+      padding-left: 5px;
+    }
+
+    .footer-links i {
+      width: 20px;
+      margin-right: 8px;
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+      justify-content: center;
+    }
+
+    .social-icons a {
+      color: white;
+      background: rgba(255, 255, 255, 0.1);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+
+    .social-icons a:hover {
+      background: var(--secondary);
+      transform: translateY(-3px);
+    }
+
+    .copyright {
+      text-align: center;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      opacity: 0.7;
+      font-size: 0.9rem;
+      color: white;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 968px) {
+      .about-section {
+        flex-direction: column;
+        gap: 30px;
+      }
+
+      .about-section.reverse {
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .nav-links {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .page-header h1 {
+        font-size: 2.2rem;
+      }
+
+      .footer-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      .footer-column {
+        text-align: center;
+      }
+
+      .footer-column h3::after {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .social-icons {
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .nav-links {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .page-header h1 {
+        font-size: 1.8rem;
+      }
+
+      .about-content h2 {
+        font-size: 1.8rem;
+      }
+
+      .stat-number {
+        font-size: 2.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="container">
+    <div class="header-content">
+      <div class="logo">
+        <i class="fas fa-car"></i>
+        <h1>DriveEase</h1>
+      </div>
+      <div class="nav-links">
+        <a th:href="@{/register}" class="nav-button">
+          <i class="fas fa-user-plus"></i> Register
+        </a>
+        <a th:href="@{/login}" class="nav-button login">
+          <i class="fas fa-sign-in-alt"></i> Login
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+    <div class="page-header">
+      <h1>About DriveEase</h1>
+      <p>Your trusted partner in vehicle rentals for all your transportation needs</p>
+    </div>
+
+    <div class="about-section">
+      <div class="about-content">
+        <h2>Our Story</h2>
+        <p>Founded in 2010, DriveEase began with a simple mission: to make vehicle rental accessible, affordable, and hassle-free for everyone. What started as a small local business with just five cars has grown into a premier rental service with a diverse fleet of over 500 vehicles.</p>
+        <p>Our journey has been driven by a passion for excellent customer service and a commitment to providing well-maintained, reliable vehicles for every occasion. From family vacations to business trips, we've been there for our customers through countless journeys.</p>
+      </div>
+      <div class="about-image">
+        <img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Our story">
+      </div>
+    </div>
+
+    <div class="about-section reverse">
+      <div class="about-content">
+        <h2>Our Mission</h2>
+        <p>At DriveEase, we believe that everyone deserves access to reliable transportation. Our mission is to provide exceptional vehicle rental services that meet the diverse needs of our customers while maintaining the highest standards of safety, quality, and customer service.</p>
+        <p>We're committed to sustainability and continuously work to reduce our environmental impact by incorporating hybrid and electric vehicles into our fleet and implementing eco-friendly practices across our operations.</p>
+      </div>
+      <div class="about-image">
+        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Our mission">
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="container">
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-number">13+</div>
+            <div class="stat-text">Years of Experience</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">500+</div>
+            <div class="stat-text">Vehicles in Fleet</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">50K+</div>
+            <div class="stat-text">Happy Customers</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">24/7</div>
+            <div class="stat-text">Customer Support</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="values">
+      <div class="page-header">
+        <h2>Our Values</h2>
+        <p>The principles that guide everything we do</p>
+      </div>
+      <div class="values-grid">
+        <div class="value-card">
+          <div class="value-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <h3>Customer First</h3>
+          <p>Our customers are at the heart of everything we do. We strive to exceed expectations with personalized service and attention to detail.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <h3>Safety & Reliability</h3>
+          <p>We maintain our vehicles to the highest standards and prioritize your safety above all else. Every car in our fleet undergoes regular inspections.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">
+            <i class="fas fa-leaf"></i>
+          </div>
+          <h3>Sustainability</h3>
+          <p>We're committed to reducing our environmental impact through eco-friendly practices and expanding our fleet of hybrid and electric vehicles.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Footer Component -->
+<footer class="driveease-footer">
+  <div class="footer-container">
+    <div class="footer-content">
+      <div class="footer-column">
+        <h3>About DriveEase</h3>
+        <p>DriveEase is a premium vehicle rental service offering a wide range of vehicles for all your transportation needs. Experience the best with our premium fleet.</p>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+      <div class="footer-column">
+        <h3>Quick Links</h3>
+        <ul class="footer-links">
+          <li><a th:href="@{/}"><i class="fas fa-chevron-right"></i> Home</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i> Our Fleet</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i> Pricing</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i> About Us</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i> Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3>Contact Us</h3>
+        <ul class="footer-links">
+          <li><a href="#"><i class="fas fa-map-marker-alt"></i> 123 Rental St, City, Country</a></li>
+          <li><a href="#"><i class="fas fa-phone"></i> +1 234 567 8900</a></li>
+          <li><a href="#"><i class="fas fa-envelope"></i> info@driveease.com</a></li>
+          <li><a href="#"><i class="fas fa-clock"></i> Mon-Sat: 8:00 AM - 8:00 PM</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="copyright">
+      <p>&copy; 2023 DriveEase Vehicle Rental. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

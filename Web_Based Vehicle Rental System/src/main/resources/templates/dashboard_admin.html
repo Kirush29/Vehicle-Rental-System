@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - DriveEase</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Global Styles */
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --text: #333;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: var(--text);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: var(--shadow);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            color: var(--secondary);
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-button {
+            padding: 10px 20px;
+            background-color: var(--secondary);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-button:hover {
+            background-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .nav-button.login {
+            background-color: transparent;
+            border: 2px solid var(--secondary);
+        }
+
+        .nav-button.login:hover {
+            background-color: var(--secondary);
+        }
+
+        /* Dashboard-specific navigation */
+        .dashboard-nav {
+            background: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-nav .container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .dashboard-nav a {
+            color: var(--primary);
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .dashboard-nav a:hover, .dashboard-nav a.active {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            padding: 1rem 0 3rem;
+        }
+
+        .welcome {
+            text-align: center;
+            margin-bottom: 3rem;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        .welcome h2 {
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .welcome p {
+            color: #777;
+            font-size: 1.2rem;
+        }
+
+        /* Grid Layout */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .card p {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin: 15px 0;
+        }
+
+        .card a {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--secondary);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: var(--transition);
+            margin-top: 10px;
+        }
+
+        .card a:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .card ul {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        .card ul li {
+            margin-bottom: 10px;
+        }
+
+        .card ul li a {
+            display: block;
+            padding: 8px 15px;
+            background: var(--light);
+            color: var(--primary);
+            text-decoration: none;
+            border-radius: 5px;
+            transition: var(--transition);
+        }
+
+        .card ul li a:hover {
+            background: var(--secondary);
+            color: white;
+        }
+
+        /* Activity Section */
+        .activity-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            margin-bottom: 3rem;
+        }
+
+        .activity-section h3 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .activity-list {
+            list-style: none;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: var(--primary);
+        }
+
+        .activity-details {
+            flex: 1;
+        }
+
+        .activity-details h4 {
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .activity-details p {
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        .activity-time {
+            color: #999;
+            font-size: 0.8rem;
+        }
+
+        /* Footer Styles */
+        .driveease-footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 0 1.5rem;
+            margin-top: auto;
+        }
+
+        .footer-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 2rem;
+        }
+
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+            color: white;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--secondary);
+        }
+
+        .footer-column p {
+            margin-bottom: 20px;
+            opacity: 0.8;
+            line-height: 1.6;
+            color: white;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: white;
+            opacity: 0.8;
+            text-decoration: none;
+            transition: var(--transition);
+            display: block;
+            text-align: left;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+            color: var(--secondary);
+            padding-left: 5px;
+        }
+
+        .footer-links i {
+            width: 20px;
+            margin-right: 8px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        .social-icons a {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .social-icons a:hover {
+            background: var(--secondary);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0.7;
+            font-size: 0.9rem;
+            color: white;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .nav-links {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .dashboard-nav .container {
+                flex-wrap: wrap;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .welcome h2 {
+                font-size: 1.8rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .footer-column {
+                text-align: center;
+            }
+
+            .footer-column h3::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .social-icons {
+                justify-content: center;
+            }
+
+            .footer-links a {
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-links {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .welcome h2 {
+                font-size: 1.8rem;
+            }
+
+            .activity-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+
+            .activity-icon {
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="container">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-car"></i>
+                <h1>DriveEase</h1>
+            </div>
+            <div class="nav-links">
+                <a th:href="@{/}" class="nav-button">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <form th:action="@{/logout}" method="post" style="display:inline;">
+                    <button type="submit" class="nav-button login">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</header>
+
+<nav class="dashboard-nav">
+    <div class="container">
+        <a th:href="@{/dashboard/admin}" class="active">Dashboard</a>
+        <a th:href="@{/admin/users}">Users</a>
+        <a th:href="@{/admin/settings}">Settings</a>
+        <a th:href="@{/admin/roles}">Roles</a>
+        <a th:href="@{/admin/logs}">Logs</a>
+    </div>
+</nav>
+
+<main>
+    <div class="container">
+        <section class="welcome">
+            <h2>Administration Dashboard</h2>
+            <p>Manage system health, users, roles, and overall platform administration</p>
+        </section>
+
+        <section class="grid">
+            <div class="card">
+                <h3><i class="fas fa-users"></i> Active Users</h3>
+                <p th:text="${activeUsers} ?: '0'">42</p>
+                <a th:href="@{/admin/users}">Manage Users</a>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-heartbeat"></i> System Health</h3>
+                <p style="color: var(--success);" th:text="${systemHealth} ?: 'OK'">Excellent</p>
+                <a th:href="@{/admin/health}">Check Details</a>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-clock"></i> Pending Approvals</h3>
+                <p th:text="${pendingApprovals} ?: '0'">7</p>
+                <a th:href="@{/admin/approvals}">Review Now</a>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-toolbox"></i> Quick Admin</h3>
+                <ul>
+                    <li><a th:href="@{/admin/roles}"><i class="fas fa-user-tag"></i> Manage Roles</a></li>
+                    <li><a th:href="@{/admin/logs}"><i class="fas fa-clipboard-list"></i> View Logs</a></li>
+                    <li><a th:href="@{/admin/backup}"><i class="fas fa-database"></i> System Backup</a></li>
+                    <li><a th:href="@{/admin/notifications}"><i class="fas fa-bell"></i> Notifications</a></li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="activity-section">
+            <h3><i class="fas fa-history"></i> Recent Admin Actions</h3>
+            <ul class="activity-list">
+                <li class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <div class="activity-details">
+                        <h4>New User Registration</h4>
+                        <p>Approved new customer account for john.doe@example.com</p>
+                        <span class="activity-time">Today, 10:24 AM</span>
+                    </div>
+                </li>
+                <li class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    <div class="activity-details">
+                        <h4>System Settings Updated</h4>
+                        <p>Modified rental pricing rules for premium vehicles</p>
+                        <span class="activity-time">Yesterday, 3:45 PM</span>
+                    </div>
+                </li>
+                <li class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="activity-details">
+                        <h4>Security Update</h4>
+                        <p>Applied latest security patches to user management system</p>
+                        <span class="activity-time">Yesterday, 11:20 AM</span>
+                    </div>
+                </li>
+                <li class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-user-lock"></i>
+                    </div>
+                    <div class="activity-details">
+                        <h4>Role Permissions Modified</h4>
+                        <p>Updated permissions for Marketing Executive role</p>
+                        <span class="activity-time">Oct 12, 2023, 4:30 PM</span>
+                    </div>
+                </li>
+            </ul>
+        </section>
+    </div>
+</main>
+
+<!-- Footer Component -->
+<footer class="driveease-footer">
+    <div class="footer-container">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>About DriveEase</h3>
+                <p>DriveEase is a premium vehicle rental service offering a wide range of vehicles for all your transportation needs. Experience the best with our premium fleet.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a th:href="@{/}"><i class="fas fa-chevron-right"></i> Home</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Our Fleet</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Pricing</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Contact Us</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-map-marker-alt"></i> 123 Kantharmadam Rd, Jaffna</a></li>
+                    <li><a href="#"><i class="fas fa-phone"></i> +94 (021) 222-3456</a></li>
+                    <li><a href="#"><i class="fas fa-envelope"></i> info@driveease.com</a></li>
+                    <li><a href="#"><i class="fas fa-clock"></i> Mon-Sat: 8:00 AM - 8:00 PM</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 DriveEase Vehicle Rental. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

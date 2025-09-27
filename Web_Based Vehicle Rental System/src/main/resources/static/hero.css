@@ -1,0 +1,66 @@
+/* Hero Section */
+.hero {
+    background: linear-gradient(rgba(44,62,80,0.8), rgba(44,62,80,0.8)),
+    url('https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80')
+    no-repeat center center/cover;
+    color: white;
+    padding: 15rem 0;
+    text-align: center;
+    animation: zoomCar 10s infinite alternate ease-in-out;
+}
+
+@keyframes zoomCar {
+    0% { background-size: 100%; background-position: center; }
+    100% { background-size: 120%; background-position: center; }
+}
+
+.hero-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hero h2 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    font-weight: 800;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+}
+
+.search-box {
+    background: white;
+    border-radius: 100px;
+    padding: 8px;
+    display: flex;
+    max-width: 600px;
+    margin: 0 auto;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.search-input {
+    flex: 1;
+    border: none;
+    padding: 15px 20px;
+    border-radius: 100px;
+    font-size: 1rem;
+    outline: none;
+}
+
+.search-button {
+    background: #3498db;
+    color: white;
+    border: none;
+    border-radius: 100px;
+    padding: 15px 30px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.search-button:hover {
+    background: #e74c3c;
+}

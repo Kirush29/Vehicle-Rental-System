@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+<div th:fragment="header">
+  <div class="container">
+    <div class="header-content">
+      <div class="logo">
+        <i class="fas fa-car"></i>
+        <h1>DriveEase</h1>
+      </div>
+      <div class="nav-links">
+        <a th:href="@{/register}" class="nav-button">
+          <i class="fas fa-user-plus"></i> Register
+        </a>
+        <a th:href="@{/login}" class="nav-button login">
+          <i class="fas fa-sign-in-alt"></i> Login
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
