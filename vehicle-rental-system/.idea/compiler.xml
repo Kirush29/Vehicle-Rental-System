@@ -10,10 +10,7 @@
         <module name="vehicle-rental-system" />
       </profile>
     </annotationProcessing>
-<<<<<<< HEAD
-=======
     <bytecodeTargetLevel target="17" />
->>>>>>> SE/main
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
